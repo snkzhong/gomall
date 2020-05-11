@@ -1,0 +1,25 @@
+log:
+  app:
+    debug: true
+    formatter: text
+    file: "log/app.log"
+
+  sql:
+    debug: true
+    file: "log/sql.log"
+
+mysql:
+  username: root
+  password: root
+  host: "tcp(localhost:3306)"
+  database: gin-app
+  config: "charset=utf8&parseTime=True&loc=Local"
+  max-idle-conns: 10
+  max-open-conns: 10
+  singular-table: true
+  log-mode: true
+
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
