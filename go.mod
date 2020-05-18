@@ -7,6 +7,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis/v7 v7.2.0 // indirect
+	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang/protobuf v1.4.1 // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -16,4 +17,5 @@ require (
 	github.com/spf13/viper v1.6.3
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
 	golang.org/x/tools v0.0.0-20200507205054-480da3ebd79c // indirect
+	google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 )

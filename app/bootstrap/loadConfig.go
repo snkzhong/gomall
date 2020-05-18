@@ -2,14 +2,16 @@ package bootstrap
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
+
+	"gomall/app/global"
+
 	"github.com/fsnotify/fsnotify"
-	. "gomall/app"
+	"github.com/spf13/viper"
 )
 
 func LoadConfig() {
 	v := viper.New()
-	v.SetConfigFile(DefaultConfigFile)
+	v.SetConfigFile(global.DefaultConfigFile)
 	err := v.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
@@ -18,13 +20,13 @@ func LoadConfig() {
 	v.WatchConfig()
 
 	v.OnConfigChange(func(e fsnotify.Event) {
-		if err := v.Unmarshal(&GlobalConfig); err != nil {
+		if err := v.Unmarshal(&global.GlobalConfig); err != nil {
 			fmt.Println(err)
 		}
-		fmt.Printf("mysql:%v, redis:%v \n", GlobalConfig.Mysql, GlobalConfig.Redis)
+		fmt.Printf("mysql:%v, redis:%v \n", global.GlobalConfig.Mysql, global.GlobalConfig.Redis)
 	})
 
-	if err := v.Unmarshal(&GlobalConfig); err != nil {
+	if err := v.Unmarshal(&global.GlobalConfig); err != nil {
 		fmt.Println(err)
 	}
 }

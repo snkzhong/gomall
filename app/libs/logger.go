@@ -1,20 +1,20 @@
 package libs
 
 import (
-	"log"
 	"fmt"
-	"time"
-	"strings"
+	"gomall/app/global"
+	"log"
 	"strconv"
-	. "gomall/app"
+	"strings"
+	"time"
 )
 
-type Logger struct {}
+type Logger struct{}
 
 func (logger *Logger) Print(values ...interface{}) {
 
 	if values[0] == "sql" {
-		source:= values[1]
+		source := values[1]
 		ms := values[2]
 		sql := values[3].(string)
 		vars := values[4].([]interface{})
@@ -25,15 +25,15 @@ func (logger *Logger) Print(values ...interface{}) {
 		now := time.Now().Format("2006-01-02 15:04:05")
 
 		message := fmt.Sprintf("\n[%v] %v sql=\"%s\" file=\"%s\" \n", now, ms, sql, source)
-		
+
 		log.Println(message)
-		if GlobalSqlLogFile != nil {
-			GlobalSqlLogFile.WriteString(message)
+		if global.GlobalSqlLogFile != nil {
+			global.GlobalSqlLogFile.WriteString(message)
 		}
 	}
 }
 
-func buildSql(sql string, vars []interface{} ) string {
+func buildSql(sql string, vars []interface{}) string {
 	for _, v := range vars {
 		t := fmt.Sprintf("%T", v)
 		if t == "string" {
@@ -41,7 +41,7 @@ func buildSql(sql string, vars []interface{} ) string {
 		} else if t == "int" || t == "float64" {
 			sql = strings.Replace(sql, "?", v.(string), 1)
 		} else if t == "[]string" {
-			sv:= v.([]string)
+			sv := v.([]string)
 			s := fmt.Sprintf("'%s'", strings.Join(sv, "','"))
 			sql = strings.Replace(sql, "?", s, 1)
 		} else if t == "[]int" {
@@ -53,7 +53,7 @@ func buildSql(sql string, vars []interface{} ) string {
 			is := fmt.Sprintf("'%s'", strings.Join(sl, "','"))
 			sql = strings.Replace(sql, "?", is, 1)
 		} else {
-			sql = strings.Replace(sql, "?", fmt.Sprintf("%v",v), 1)
+			sql = strings.Replace(sql, "?", fmt.Sprintf("%v", v), 1)
 		}
 	}
 

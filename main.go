@@ -1,50 +1,58 @@
 package main
 
 import (
-	"os"
-	"fmt"
 	"flag"
+	"fmt"
+	"os"
+	"strings"
+
 	"gomall/app/bootstrap"
-	. "gomall/app"
+	"gomall/app/global"
+	"gomall/app/routers"
+	"gomall/scripts"
 )
 
 func main() {
-	fmt.Printf("args:%v", os.Args)
+	fmt.Printf("args:%v \n", os.Args)
 
 	//解析启动参数
-	var mode string
-	flag.StringVar(&mode, "mode", "", "mode type")
-	var level int
-	flag.IntVar(&level, "level", 0, "debug level")
-	flag.Parse()
-	if mode == "" {
-		flag.Usage()
-		return
-	}
-	fmt.Printf("start mode:%s level:%d \n", mode, level)
-
-
-	// log.SetFormatter(&log.TextFormatter{
-	// 	FullTimestamp: true,
-	// })
-	// log.WithFields(log.Fields{
-	// 	"animal": "walrus",
-	// 	"number": 1,
-	// 	"size":   10,
-	// }).Info("A walrus appears")
+	/*
+		var mode string
+		flag.StringVar(&mode, "mode", "", "mode type")
+		var level int
+		flag.IntVar(&level, "level", 0, "debug level")
+		flag.Parse()
+		if mode == "" {
+			flag.Usage()
+			return
+		}
+		fmt.Printf("start mode:%s level:%d \n", mode, level)
+	*/
 
 	bootstrap.LoadConfig()
 
 	bootstrap.SetupLog()
-	GlobalLog.Info("Before app start")
+	global.GlobalLog.Info("Before app start")
 
 	bootstrap.StartMysql()
-	defer GlobalDb.Close()
+	defer global.GlobalDb.Close()
 
-	ginEngine := bootstrap.SetupRouters()
+	// bootstrap.SetupRouters()
+	routers.StartRouters()
 
-	fmt.Printf("app started %v \n", GlobalConfig)
-	GlobalLog.Info("app started")
+	var genModel string
+	flag.StringVar(&genModel, "genModel", "", "Generate Model")
+	flag.Parse()
+	if genModel != "" {
+		modelTable := strings.Split(genModel, ":")
+		if len(modelTable) == 2 {
+			scripts.GenModel(modelTable[0], modelTable[1])
+		}
+		return
+	}
 
-	ginEngine.Run()
+	// fmt.Printf("categorys: %v \n", services.GetAllCategory())
+	// services.GetAllCategory()
+	global.GlobalLog.Info("app started")
+	bootstrap.Startup()
 }

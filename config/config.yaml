@@ -2,7 +2,7 @@ log:
   app:
     debug: true
     formatter: text
-    file: "log/app.log"
+    file: "log/global.log"
 
   sql:
     debug: true
@@ -12,7 +12,7 @@ mysql:
   username: root
   password: root
   host: "tcp(localhost:3306)"
-  database: gin-app
+  database: gomall
   config: "charset=utf8&parseTime=True&loc=Local"
   max-idle-conns: 10
   max-open-conns: 10
